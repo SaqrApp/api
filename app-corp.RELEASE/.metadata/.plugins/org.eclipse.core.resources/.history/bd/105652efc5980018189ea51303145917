@@ -1,0 +1,101 @@
+package com.example.demo.services;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.example.demo.models.User;
+import com.example.demo.models.UserType;
+import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.UserTypeRepository;
+import com.example.demo.util.UserValidator;
+import com.example.demo.views.ResponseObject;
+import com.example.demo.views.UserViews;
+
+@Service
+public class UserService   {
+	
+	@Autowired
+ 	public	UserRepository userRepository;
+	@Autowired
+	UserTypeRepository userTypeRepository;
+    //retrieve all users 
+	public List<User> getAllUsers()
+	{
+		return userRepository.findAll();
+	}	
+	//to find the user by its ID 
+	public UserViews getUserById(int id) 
+	{
+		User user = userRepository.findUserByUserId(id);
+	
+    //take object from UserViews   
+		UserViews userViews = new UserViews(user);
+		return userViews;
+	}
+	
+	//User login
+	public Object login(String email, String password) {
+		/**
+		 * ToDo: Implement the validation on the email and password
+		 * */
+		User user = userRepository.findUserByEmailAndPassword(email, password);
+		if (user != null)
+			return new UserViews(user);
+		else 
+			return new ResponseObject(0, "Inavlid email or password!");
+	}
+		
+    /*
+     * User registration
+     * */
+	public Object registration(String firstName , String lastName , String email , String password, String profilePic , int userTypeId) {
+		/*
+		 * validate the email 
+		 * */
+		if (!UserValidator.validateEmail(email)) {
+			 return new ResponseObject(-5, "This is invaild email!"); 
+		}
+		
+	/*
+	 *validate the first name 
+	 * */
+		if(!UserValidator.validateFirstname(firstName)) {
+			return new ResponseObject(-6, "First Name Is Not Valid!");
+		}
+		/*
+		 * validate last name 
+		 * */
+		if(!UserValidator.validateLastname(lastName)) {
+			
+			return new ResponseObject(-7, "Last Name Is Not Valid!");
+		}
+		
+		/**
+		 * validate password
+		 * */
+		
+		if(!UserValidator.validatePassword(password))
+		{
+			return new ResponseObject(-8, "invallid password!");
+		}
+		
+		 UserType userType = userTypeRepository.findUserTypeById(userTypeId);
+		 User user = userRepository.findUserByEmail(email);
+
+		 if (userType == null) {
+			return new ResponseObject(-3, "Invalid user type!");
+		 }
+		 if (user != null) { 
+			 return new ResponseObject(-2, "This user is exists!"); 
+		 }
+		 user = new User();
+		 user.setEmail(email);
+		 user.setFirstName(firstName);
+		 user.setLastName(lastName);
+		 user.setPassword(password);
+		 user.setProfilePic(profilePic);
+		 user.setUserType(userType);
+		 userRepository.save(user);
+	    
+		 return new UserViews(user);
+	}	
+}

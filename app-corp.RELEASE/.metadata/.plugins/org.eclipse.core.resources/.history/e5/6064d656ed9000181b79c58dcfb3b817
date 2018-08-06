@@ -1,0 +1,19 @@
+package com.codebyahmed;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
+
+@Converter(autoApply = true)
+public abstract class LocalDateTimeAttributeConverter implements AttributeConverter {
+	
+    public Timestamp convertToDatabaseColumn(LocalDateTime locDateTime) {
+    	return (locDateTime == null ? null : Timestamp.valueOf(locDateTime));
+    }
+
+    public LocalDateTime convertToEntityAttribute(Timestamp sqlTimestamp) {
+    	return (sqlTimestamp == null ? null : sqlTimestamp.toLocalDateTime());
+    }
+}

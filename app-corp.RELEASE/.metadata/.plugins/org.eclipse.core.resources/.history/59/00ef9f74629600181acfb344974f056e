@@ -1,0 +1,125 @@
+package com.example.demo.models;
+
+
+
+import java.io.Serializable;
+
+import java.util.List;
+
+import javax.persistence.Basic;
+
+import javax.persistence.CascadeType;
+
+import javax.persistence.Column;
+
+import javax.persistence.Entity;
+
+import javax.persistence.FetchType;
+
+import javax.persistence.Id;
+
+import javax.persistence.OneToMany;
+
+import javax.persistence.Table;
+
+
+
+/**
+
+ *
+
+ * @author shehab Salah
+
+ */
+
+@Entity
+
+@Table(name = "user_type")
+public class UserType implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+
+    @Basic(optional = false)
+    @Column(name = "tybe_name")
+    private String tybeName;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userType", fetch = FetchType.LAZY)
+    private List<User> userList;
+
+    public UserType() {
+    }
+
+
+
+    public UserType(Integer id) {
+
+        this.id = id;
+
+    }
+
+
+
+    public UserType(Integer id, String tybeName) {
+
+        this.id = id;
+
+        this.tybeName = tybeName;
+
+    }
+
+
+
+    public Integer getId() {
+
+        return id;
+
+    }
+
+
+
+    public void setId(Integer id) {
+
+        this.id = id;
+
+    }
+
+
+
+    public String getTybeName() {
+
+        return tybeName;
+
+    }
+
+
+
+    public void setTybeName(String tybeName) {
+
+        this.tybeName = tybeName;
+
+    }
+
+
+
+    public List<User> getUserList() {
+
+        return userList;
+
+    }
+
+
+
+    public void setUserList(List<User> userList) {
+
+        this.userList = userList;
+
+    }
+
+    
+
+}

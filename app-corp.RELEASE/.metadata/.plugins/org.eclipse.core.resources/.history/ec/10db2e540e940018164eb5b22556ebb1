@@ -1,0 +1,14 @@
+package com.example.demo.repositories;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.models.UserType;
+
+
+
+/*
+ * check if the <User_Type , String> 
+ * String instead of Integer?!
+ * */
+public interface UserTypeRepository extends JpaRepository <UserType , String>{}
+
+	

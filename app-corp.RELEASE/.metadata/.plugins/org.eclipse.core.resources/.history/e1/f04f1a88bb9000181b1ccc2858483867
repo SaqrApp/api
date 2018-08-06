@@ -1,0 +1,43 @@
+package controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import services.UserService;
+import views.UserViews;
+
+@RestController
+public class UserController {
+
+	@Autowired
+	private UserService userservice;
+//	 @GetMapping(value = "/login")
+	 
+	 @PostMapping(path = "login")
+	    public Object login(@RequestBody String email , @RequestBody String password) 
+	 {		 	
+		 UserViews userViews = userservice.login(email, password);
+		 return userViews;
+	 }
+
+//	    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
+//	    public String welcome(Model model) {
+//	        return "welcome";
+//	    }
+
+//		public UserService getUserservice() {
+//			return userservice;
+//		}
+//
+//		public void setUserservice(UserService userservice) {
+//			this.userservice = userservice;
+//		}
+	 
+}
